@@ -1,0 +1,104 @@
+﻿strategy,page_id,position_char,chunk_id,chunk_text,score_0_1_2,reason
+A,applevel-consistency,3077,A:applevel-consistency:006," Transactions and Data Replication
+
+This level of integrity protection using Serializable transactions does not yet extend to hot standby mode (Section 27.4) or logical replicas. Because of that, those using hot standby or logical replication may want to use Repeatable Read and explicit locking on the primary.
+
+### 13.4.2. Enforcing Consistency with Explicit Blocking Locks #
+
+When non-serializable writes are possible, to ensure the current validity of a row and protect it against concurrent upda",,
+A,backup-dump,4645,A:backup-dump:010,"using this mode, be aware that even a minor error can rollback a restore that has already run for many hours. However, that might still be preferable to manually cleaning up a complex database after a partially restored dump.
+
+The ability of pg_dump and psql to write to or read from pipes makes it possible to dump a database directly from one server to another, for example:
+
+```
+pg_dump -h host1 dbname | psql -X -h host2 dbname
+```
+
+### Important
+
+The dumps produced by pg_dump are relative to te",,
+A,backup-file,2145,A:backup-file:004,"it is implemented correctly). The typical procedure is to make a “frozen snapshot” of the volume containing the database, then copy the whole data directory (not just parts, see above) from the snapshot to a backup device, then release the frozen snapshot. This will work even while the database server is running. However, a backup created in this way saves the database files in a state as if the database server was not properly shut down; therefore, when you start the database server on the back",,
+A,continuous-archiving,19194,A:continuous-archiving:042," happens quickly, but you are advised to monitor your archive system to ensure there are no delays. If the archive process has fallen behind because of failures of the archive command or library, it will keep retrying until the archive succeeds and the backup is complete. If you wish to place a time limit on the execution of pg_backup_stop, set an appropriate statement_timeout value, but make note that if pg_backup_stop terminates because of this your backup may not be valid.
+
+If the backup proc",,
+A,different-replication-solutions,3991,A:different-replication-solutions:008,"ike random(), CURRENT_TIMESTAMP, and sequences can have different values on different servers. This is because each server operates independently, and because SQL queries are broadcast rather than actual data changes. If this is unacceptable, either the middleware or the application must determine such values from a single source and then use those values in write queries. Care must also be taken that all transactions either commit or abort on all servers, perhaps using two-phase commit (PREPARE",,
+A,explicit-joins,3362,A:explicit-joins:007,"t kinds of JOIN don't completely constrain the join order, it is possible to instruct the PostgreSQL query planner to treat all JOIN clauses as constraining the join order anyway. For example, these three queries are logically equivalent:
+
+```
+SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;
+SELECT * FROM a CROSS JOIN b CROSS JOIN c WHERE a.id = b.id AND b.ref = c.id;
+SELECT * FROM a JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);
+```
+
+But if we tell the planner to honor the JOIN or",,
+A,explicit-locking,8143,A:explicit-locking:017,"ial indexes and expressional indexes are not considered), but this may change in the future.
+
+Behaves similarly to FOR UPDATE, except that the lock acquired is weaker: this lock will not block SELECT FOR KEY SHARE commands that attempt to acquire a lock on the same rows. This lock mode is also acquired by any UPDATE that does not acquire a FOR UPDATE lock.
+
+Behaves similarly to FOR NO KEY UPDATE, except that it acquires a shared lock rather than exclusive lock on each retrieved row. A shared loc",,
+A,high-availability,1449,A:high-availability:003,"ry servers. Servers that track changes in the primary are called standby or secondary servers. A standby server that cannot be connected to until it is promoted to a primary server is called a warm standby server, and one that can accept connections and serves read-only queries is called a hot standby server.
+
+Some solutions are synchronous, meaning that a data-modifying transaction is not considered committed until all servers have committed the transaction. This guarantees that a failover will",,
+A,hot-standby,13000,A:hot-standby:028,"eriods. You should also consider increasing max_standby_streaming_delay to avoid rapid cancellations by newly-arrived streaming WAL entries after reconnection.
+
+The number of query cancels and the reason for them can be viewed using the pg_stat_database_conflicts system view on the standby server. The pg_stat_database system view also contains summary information.
+
+Users can control whether a log message is produced when WAL replay is waiting longer than deadlock_timeout for conflicts. This is c",,
+A,indexes-bitmap-scans,1664,A:indexes-bitmap-scans:003,"he query. Finally, the actual table rows are visited and returned. The table rows are visited in physical order, because that is how the bitmap is laid out; this means that any ordering of the original indexes is lost, and so a separate sort step will be needed if the query has an ORDER BY clause. For this reason, and because each additional index scan adds extra time, the planner will sometimes choose to use a simple index scan even though additional indexes are available that could have been u",,
+B,applevel-consistency,3077,,,,
+B,backup-dump,4645,B:backup-dump:004,"26.1. SQL Dump # > 26.1.1. Restoring the Dump #
+By default, the psql script will continue to execute after an SQL error is encountered. You might wish to run psql with the ON_ERROR_STOP variable set to alter that behavior and have psql exit with an exit status of 3 if an SQL error occurs:
+
+```
+psql -X --set ON_ERROR_STOP=on dbname < dumpfile
+```
+
+Either way, you will only have a partially restored database. Alternatively, you can specify that the whole dump should be restored as a single transaction, so the restore is either fully completed or fully rolled back. This mode can be specified by passing the -1 or --single-transaction command-line options to psql. When using this mode, be aware that even a minor error can rollback a restore that has already run for many hours. However, that might still be preferable to manually cleaning up a complex database after a partially restored dump.
+
+The ability of pg_dump and psql to write to or read from pipes makes it possible to dump a database directly from one server to another, for example:
+
+```
+pg_dump -h host1 dbname | psql -X -h host2 dbname
+```",,
+B,backup-file,2145,B:backup-file:002,"26.2. File System Level Backup #
+An alternative file-system backup approach is to make a “consistent snapshot” of the data directory, if the file system supports that functionality (and you are willing to trust that it is implemented correctly). The typical procedure is to make a “frozen snapshot” of the volume containing the database, then copy the whole data directory (not just parts, see above) from the snapshot to a backup device, then release the frozen snapshot. This will work even while the database server is running. However, a backup created in this way saves the database files in a state as if the database server was not properly shut down; therefore, when you start the database server on the backed-up data, it will think the previous server instance crashed and will replay the WAL log. This is not a problem; just be aware of it (and be sure to include the WAL files in your backup). You can perform a CHECKPOINT before taking the snapshot to reduce recovery time.",,
+B,continuous-archiving,19194,B:continuous-archiving:021,"26.3. Continuous Archiving and Point-in-Time Recovery (PITR) # > 26.3.3. Making a Base Backup Using the Low Level API #
+Once the WAL segment files active during the backup are archived, you are done. The file identified by pg_backup_stop's first return value is the last segment that is required to form a complete set of backup files. On a primary, if archive_mode is enabled and the wait_for_archive parameter is true, pg_backup_stop does not return until the last segment has been archived. On a standby, archive_mode must be always in order for pg_backup_stop to wait. Archiving of these files happens automatically since you have already configured archive_command or archive_library. In most cases this happens quickly, but you are advised to monitor your archive system to ensure there are no delays. If the archive process has fallen behind because of failures of the archive command or library, it will keep retrying until the archive succeeds and the backup is complete. If you wish to place a time limit on the execution of pg_backup_stop, set an appropriate statement_timeout value, but make note that if pg_backup_stop terminates because of this your backup may not be valid.",,
+B,different-replication-solutions,3991,B:different-replication-solutions:004,"27.1. Comparison of Different Solutions #
+If queries are simply broadcast unmodified, functions like random(), CURRENT_TIMESTAMP, and sequences can have different values on different servers. This is because each server operates independently, and because SQL queries are broadcast rather than actual data changes. If this is unacceptable, either the middleware or the application must determine such values from a single source and then use those values in write queries. Care must also be taken that all transactions either commit or abort on all servers, perhaps using two-phase commit (PREPARE TRANSACTION and COMMIT PREPARED). Pgpool-II and Continuent Tungsten are examples of this type of replication.
+
+For servers that are not regularly connected or have slow communication links, like laptops or remote servers, keeping data consistent among servers is a challenge. Using asynchronous multimaster replication, each server works independently, and periodically communicates with the other servers to identify conflicting transactions. The conflicts can be resolved by users or conflict resolution rules. Bucardo is an example of this type of replication.",,
+B,explicit-joins,3362,B:explicit-joins:003,"14.3. Controlling the Planner with Explicit JOIN Clauses #
+Even though most kinds of JOIN don't completely constrain the join order, it is possible to instruct the PostgreSQL query planner to treat all JOIN clauses as constraining the join order anyway. For example, these three queries are logically equivalent:
+
+```
+SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;
+SELECT * FROM a CROSS JOIN b CROSS JOIN c WHERE a.id = b.id AND b.ref = c.id;
+SELECT * FROM a JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);
+```
+
+But if we tell the planner to honor the JOIN order, the second and third take less time to plan than the first. This effect is not worth worrying about for only three tables, but it can be a lifesaver with many tables.
+
+To force the planner to follow the join order laid out by explicit JOINs, set the join_collapse_limit run-time parameter to 1. (Other possible values are discussed below.)
+
+You do not need to constrain the join order completely in order to cut search time, because it's OK to use JOIN operators within items of a plain FROM list. For example, consider:
+
+```
+SELECT * FROM a CROSS JOIN b, c, d, e WHERE ...;
+```",,
+B,explicit-locking,8143,B:explicit-locking:008,"13.3. Explicit Locking # > 13.3.2. Row-Level Locks #
+Behaves similarly to FOR UPDATE, except that the lock acquired is weaker: this lock will not block SELECT FOR KEY SHARE commands that attempt to acquire a lock on the same rows. This lock mode is also acquired by any UPDATE that does not acquire a FOR UPDATE lock.
+
+Behaves similarly to FOR NO KEY UPDATE, except that it acquires a shared lock rather than exclusive lock on each retrieved row. A shared lock blocks other transactions from performing UPDATE, DELETE, SELECT FOR UPDATE or SELECT FOR NO KEY UPDATE on these rows, but it does not prevent them from performing SELECT FOR SHARE or SELECT FOR KEY SHARE.
+
+Behaves similarly to FOR SHARE, except that the lock is weaker: SELECT FOR UPDATE is blocked, but not SELECT FOR NO KEY UPDATE. A key-shared lock blocks other transactions from performing DELETE or any UPDATE that changes the key values, but not other UPDATE, and neither does it prevent SELECT FOR NO KEY UPDATE, SELECT FOR SHARE, or SELECT FOR KEY SHARE.",,
+B,high-availability,1449,B:high-availability:001,"Chapter 27. High Availability, Load Balancing, and Replication
+Some solutions deal with synchronization by allowing only one server to modify the data. Servers that can modify data are called read/write, master or primary servers. Servers that track changes in the primary are called standby or secondary servers. A standby server that cannot be connected to until it is promoted to a primary server is called a warm standby server, and one that can accept connections and serves read-only queries is called a hot standby server.
+
+Some solutions are synchronous, meaning that a data-modifying transaction is not considered committed until all servers have committed the transaction. This guarantees that a failover will not lose any data and that all load-balanced servers will return consistent results no matter which server is queried. In contrast, asynchronous solutions allow some delay between the time of a commit and its propagation to the other servers, opening the possibility that some transactions might be lost in the switch to a backup server, and that load balanced servers might return slightly stale results. Asynchronous communication is used when synchronous would be too slow.",,
+B,hot-standby,13000,B:hot-standby:013,"27.4. Hot Standby # > 27.4.2. Handling Query Conflicts #
+The number of query cancels and the reason for them can be viewed using the pg_stat_database_conflicts system view on the standby server. The pg_stat_database system view also contains summary information.
+
+Users can control whether a log message is produced when WAL replay is waiting longer than deadlock_timeout for conflicts. This is controlled by the log_recovery_conflict_waits parameter.",,
+B,indexes-bitmap-scans,1664,B:indexes-bitmap-scans:001,"11.5. Combining Multiple Indexes #
+To combine multiple indexes, the system scans each needed index and prepares a bitmap in memory giving the locations of table rows that are reported as matching that index's conditions. The bitmaps are then ANDed and ORed together as needed by the query. Finally, the actual table rows are visited and returned. The table rows are visited in physical order, because that is how the bitmap is laid out; this means that any ordering of the original indexes is lost, and so a separate sort step will be needed if the query has an ORDER BY clause. For this reason, and because each additional index scan adds extra time, the planner will sometimes choose to use a simple index scan even though additional indexes are available that could have been used as well.",,

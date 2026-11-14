@@ -117,7 +117,7 @@ def extract_text(html: str):
         if el.name != "table" and el.find_parent("table"):
             continue
         if el.name[0] == "h":
-            text = norm(el.get_text())
+            text = re.sub(r"\s*#$", "", norm(el.get_text()))  # bo dau permalink '#' cuoi heading
             if text:
                 title = title or text
                 blocks.append("#" * int(el.name[1]) + " " + text)

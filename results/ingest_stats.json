@@ -8,11 +8,11 @@
     "len_p90": 500,
     "len_max": 500,
     "seconds_chunk": 0.0,
-    "seconds_embed": 120.6,
-    "seconds_db": 0.66,
-    "seconds_total": 121.2,
+    "seconds_embed": 128.9,
+    "seconds_db": 0.7,
+    "seconds_total": 129.6,
     "cost_usd": 0,
-    "reload_rows_before": 0,
+    "reload_rows_before": 835,
     "reload_rows_after": 835,
     "model": "intfloat/multilingual-e5-base",
     "dim": 768,
@@ -21,7 +21,7 @@
       "sentence_transformers": "6.3.0",
       "torch": "2.15.0+cpu"
     },
-    "run_at": "2026-11-14 10:53:29"
+    "run_at": "2026-11-14 11:05:18"
   },
   "B": {
     "n_chunks": 418,
@@ -32,11 +32,11 @@
     "len_p90": 1218,
     "len_max": 1481,
     "seconds_chunk": 0.01,
-    "seconds_embed": 111.7,
-    "seconds_db": 0.35,
-    "seconds_total": 112.1,
+    "seconds_embed": 120.5,
+    "seconds_db": 0.55,
+    "seconds_total": 121.0,
     "cost_usd": 0,
-    "reload_rows_before": 0,
+    "reload_rows_before": 418,
     "reload_rows_after": 418,
     "model": "intfloat/multilingual-e5-base",
     "dim": 768,
@@ -45,6 +45,6 @@
       "sentence_transformers": "6.3.0",
       "torch": "2.15.0+cpu"
     },
-    "run_at": "2026-11-14 10:55:21"
+    "run_at": "2026-11-14 11:07:19"
   }
 }
