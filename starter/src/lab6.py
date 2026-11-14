@@ -403,8 +403,10 @@ def cmd_audit(_):
         chunks = build_chunks(sample, strategy)
         for p in sample:
             pos = len(p["text"]) // 2
-            cover = [c for c in chunks if c["page"] == p["page_id"] and c["start_char"] <= pos < c["end_char"]]
-            c = cover[0] if cover else None
+            same = [c for c in chunks if c["page"] == p["page_id"]]
+            cover = [c for c in same if c["start_char"] <= pos < c["end_char"]]
+            # vi tri co the roi vao khoang trong giua cac chunk (heading/dong trong) -> lay chunk gan nhat
+            c = cover[0] if cover else min(same, key=lambda x: min(abs(x["start_char"] - pos), abs(x["end_char"] - pos)))
             rows.append([strategy, p["page_id"], pos, c["chunk_id"] if c else "", c["text"] if c else "", "", ""])
     with (RESULTS / "audit_coherence.csv").open("w", newline="", encoding="utf-8-sig") as f:
         w = csv.writer(f)

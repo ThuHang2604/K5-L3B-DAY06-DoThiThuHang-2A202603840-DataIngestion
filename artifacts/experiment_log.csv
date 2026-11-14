@@ -1,4 +1,4 @@
 strategy,chunking,chunk_size,overlap,metadata,filter,vectorizer,hypothesis,dev_hit1,dev_hit3,test_hit1,test_hit3,notes
-A,,,,,,,,,,,,
-B,,,,,,,,,,,,
-C,,,,,,,,,,,,
+A,fixed-size theo ky tu,500,50,"document_id, source, page, part, chapter, section_title",none,"intfloat/multilingual-e5-base (768 chieu, cosine, pgvector exact)",Baseline don gian: chunk co dinh de bi cat giua y nen coherence va Hit thap hon B,11/19,16/19,4/7,6/7,835 chunk; ingest 129.6s; coherence 0.9/2; metadata 15/15; grounding 0/1/4 (tb 1.8); Hit@3 muc trang 25/26
+B,"theo heading/doan, gom toi da 1200 ky tu, khoi code giu nguyen, them tien to 'tieu de trang > heading'",1200 (toi da),0,"document_id, source, page, part, chapter, section_title",none,"intfloat/multilingual-e5-base (768 chieu, cosine, pgvector exact)",Giu tron y va ngu canh theo heading nen coherence va grounding cao hon A voi it chunk hon,13/19,16/19,3/7,7/7,418 chunk; ingest 121.0s; coherence 1.6/2; metadata 15/15; grounding 0/0/5 (tb 2.0); Hit@3 muc trang 26/26
+C,giong B (dung chung index B),1200 (toi da),0,"document_id, source, page, part, chapter, section_title",WHERE part = <gia tri> chi cho cau co filter (6/26 cau); cau khac chay khong filter,"intfloat/multilingual-e5-base (768 chieu, cosine, pgvector exact)","Chi them filter metadata nen tang Hit@1 va giam nhieu o cau co pham vi ro, khong doi chunk",14/19,16/19,5/7,7/7,"418 chunk dung lai index B, khong ton them ingest; filter 6/6 (hien nhien do WHERE); Hit@1 tong 19/26 (B 16/26); coherence = B; grounding 0/0/5 (tb 2.0)"

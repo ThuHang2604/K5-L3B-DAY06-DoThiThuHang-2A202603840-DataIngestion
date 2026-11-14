@@ -1,3 +1,45 @@
+## Bài làm của học viên — Đỗ Thị Thu Hằng (2A202603840, L3B)
+
+**Đề tài:** so sánh 3 chiến lược dữ liệu (A: chunk cố định, B: chunk theo heading, C: B + filter metadata `part`) trên tài liệu kỹ thuật **PostgreSQL 16** (docs chính thức, 36 trang section hợp lệ), embedding `intfloat/multilingual-e5-base`, lưu bằng PostgreSQL + pgvector.
+
+**Báo cáo:** [report/individual/2A202603840_DoThiThuHang.md](report/individual/2A202603840_DoThiThuHang.md)
+
+### Cài đặt (Windows CMD, Python 3.11–3.14, Docker)
+```cmd
+cd starter
+python -m venv .venv
+.venv\Scripts\activate.bat
+python -m pip install -r requirements.txt
+python -m pip install requests beautifulsoup4 lxml sentence-transformers tqdm
+copy .env.example .env
+docker compose -p day6_student_starter up -d --wait
+python scripts\check_setup.py
+```
+Phiên bản đã dùng: xem `starter/requirements-lock.txt` (Python 3.13.14, sentence-transformers 6.3.0, torch 2.15.0, PostgreSQL 16.16, pgvector 0.8.7). Không commit `.env`.
+
+### Chạy lại (từ thư mục `starter/`)
+```cmd
+python -m src.crawl_pg_docs      # tải docs v16 -> data/manifest.json, data/pages/, results/ingest_log.csv
+python -m src.lab6 ingest        # chunk A/B, embedding, nạp pgvector (chạy 2 lần: số dòng không đổi)
+python -m src.lab6 validate      # kiểm tra benchmark (26 câu, evidence nằm nguyên văn trong trang gold)
+python -m src.lab6 evaluate      # top-3 cho A/B/C -> results/trace_*.jsonl, results/metrics.csv
+python -m src.lab6 audit         # tạo mẫu chấm thủ công (coherence, metadata, grounding)
+```
+
+### Dữ liệu và kết quả
+| Đường dẫn | Nội dung |
+|---|---|
+| `data/manifest.json`, `data/legal_notice.txt` | nguồn, version, quyền, quy tắc đếm trang, danh sách trang |
+| `data/pages/` | văn bản đã chuẩn hóa của 36 trang hợp lệ |
+| `benchmark/questions.jsonl` | 26 câu (19 dev / 7 test, 6 câu filter) kèm evidence |
+| `artifacts/experiment_log.csv` | cấu hình và kết quả A/B/C |
+| `results/` | log ingest, thống kê, trace top-3, metrics, nhãn audit |
+| `starter/src/crawl_pg_docs.py`, `starter/src/lab6.py` | mã pipeline |
+
+HTML gốc được cache ở `data/raw_html/` (không commit); chạy lại `crawl_pg_docs` để tải lại.
+
+---
+
 # Day 06 · Data Ingestion Engineering
 
 **Lab cá nhân** · **4 giờ** · **Dữ liệu tự chọn**
