@@ -1,0 +1,50 @@
+{
+  "A": {
+    "n_chunks": 835,
+    "total_chars": 408911,
+    "len_min": 73,
+    "len_median": 500,
+    "len_mean": 489.7,
+    "len_p90": 500,
+    "len_max": 500,
+    "seconds_chunk": 0.0,
+    "seconds_embed": 120.6,
+    "seconds_db": 0.66,
+    "seconds_total": 121.2,
+    "cost_usd": 0,
+    "reload_rows_before": 0,
+    "reload_rows_after": 835,
+    "model": "intfloat/multilingual-e5-base",
+    "dim": 768,
+    "metric": "cosine (exact scan, khong index ANN)",
+    "versions": {
+      "sentence_transformers": "6.3.0",
+      "torch": "2.15.0+cpu"
+    },
+    "run_at": "2026-11-14 10:53:29"
+  },
+  "B": {
+    "n_chunks": 418,
+    "total_chars": 386564,
+    "len_min": 155,
+    "len_median": 984.5,
+    "len_mean": 924.8,
+    "len_p90": 1218,
+    "len_max": 1481,
+    "seconds_chunk": 0.01,
+    "seconds_embed": 111.7,
+    "seconds_db": 0.35,
+    "seconds_total": 112.1,
+    "cost_usd": 0,
+    "reload_rows_before": 0,
+    "reload_rows_after": 418,
+    "model": "intfloat/multilingual-e5-base",
+    "dim": 768,
+    "metric": "cosine (exact scan, khong index ANN)",
+    "versions": {
+      "sentence_transformers": "6.3.0",
+      "torch": "2.15.0+cpu"
+    },
+    "run_at": "2026-11-14 10:55:21"
+  }
+}

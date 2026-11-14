@@ -1,0 +1,48 @@
+page_id,url,status,chars,note
+indexes,https://www.postgresql.org/docs/16/indexes.html,skipped_short,297,< 1500 chars
+indexes-intro,https://www.postgresql.org/docs/16/indexes-intro.html,kept,4058,
+indexes-types,https://www.postgresql.org/docs/16/indexes-types.html,kept,6106,
+indexes-multicolumn,https://www.postgresql.org/docs/16/indexes-multicolumn.html,kept,3673,
+indexes-ordering,https://www.postgresql.org/docs/16/indexes-ordering.html,kept,3052,
+indexes-bitmap-scans,https://www.postgresql.org/docs/16/indexes-bitmap-scans.html,kept,3328,
+indexes-unique,https://www.postgresql.org/docs/16/indexes-unique.html,skipped_short,1122,< 1500 chars
+indexes-expressional,https://www.postgresql.org/docs/16/indexes-expressional.html,kept,1949,
+indexes-partial,https://www.postgresql.org/docs/16/indexes-partial.html,kept,8883,
+indexes-index-only-scans,https://www.postgresql.org/docs/16/indexes-index-only-scans.html,kept,9478,
+indexes-opclass,https://www.postgresql.org/docs/16/indexes-opclass.html,kept,4168,
+indexes-collations,https://www.postgresql.org/docs/16/indexes-collations.html,skipped_short,937,< 1500 chars
+indexes-examine,https://www.postgresql.org/docs/16/indexes-examine.html,kept,3696,
+mvcc,https://www.postgresql.org/docs/16/mvcc.html,skipped_short,394,< 1500 chars
+mvcc-intro,https://www.postgresql.org/docs/16/mvcc-intro.html,kept,1631,
+transaction-iso,https://www.postgresql.org/docs/16/transaction-iso.html,kept,23212,
+explicit-locking,https://www.postgresql.org/docs/16/explicit-locking.html,kept,16286,
+applevel-consistency,https://www.postgresql.org/docs/16/applevel-consistency.html,kept,6154,
+mvcc-serialization-failure-handling,https://www.postgresql.org/docs/16/mvcc-serialization-failure-handling.html,kept,2263,
+mvcc-caveats,https://www.postgresql.org/docs/16/mvcc-caveats.html,kept,1840,
+locking-indexes,https://www.postgresql.org/docs/16/locking-indexes.html,skipped_short,1445,< 1500 chars
+performance-tips,https://www.postgresql.org/docs/16/performance-tips.html,skipped_short,284,< 1500 chars
+using-explain,https://www.postgresql.org/docs/16/using-explain.html,kept,37428,
+planner-stats,https://www.postgresql.org/docs/16/planner-stats.html,kept,15182,
+explicit-joins,https://www.postgresql.org/docs/16/explicit-joins.html,kept,6725,
+populate,https://www.postgresql.org/docs/16/populate.html,kept,9422,
+non-durability,https://www.postgresql.org/docs/16/non-durability.html,skipped_short,1403,< 1500 chars
+maintenance,https://www.postgresql.org/docs/16/maintenance.html,kept,1558,
+routine-vacuuming,https://www.postgresql.org/docs/16/routine-vacuuming.html,kept,35429,
+routine-reindex,https://www.postgresql.org/docs/16/routine-reindex.html,skipped_short,1360,< 1500 chars
+logfile-maintenance,https://www.postgresql.org/docs/16/logfile-maintenance.html,kept,4975,
+backup,https://www.postgresql.org/docs/16/backup.html,skipped_short,507,< 1500 chars
+backup-dump,https://www.postgresql.org/docs/16/backup-dump.html,kept,9290,
+backup-file,https://www.postgresql.org/docs/16/backup-file.html,kept,4291,
+continuous-archiving,https://www.postgresql.org/docs/16/continuous-archiving.html,kept,38388,
+high-availability,https://www.postgresql.org/docs/16/high-availability.html,kept,2898,
+different-replication-solutions,https://www.postgresql.org/docs/16/different-replication-solutions.html,kept,7982,
+warm-standby,https://www.postgresql.org/docs/16/warm-standby.html,kept,32508,
+warm-standby-failover,https://www.postgresql.org/docs/16/warm-standby-failover.html,kept,2960,
+hot-standby,https://www.postgresql.org/docs/16/hot-standby.html,kept,26000,
+wal,https://www.postgresql.org/docs/16/wal.html,skipped_short,164,< 1500 chars
+wal-reliability,https://www.postgresql.org/docs/16/wal-reliability.html,kept,7969,
+checksums,https://www.postgresql.org/docs/16/checksums.html,skipped_short,1185,< 1500 chars
+wal-intro,https://www.postgresql.org/docs/16/wal-intro.html,kept,2456,
+wal-async-commit,https://www.postgresql.org/docs/16/wal-async-commit.html,kept,5077,
+wal-configuration,https://www.postgresql.org/docs/16/wal-configuration.html,kept,15412,
+wal-internals,https://www.postgresql.org/docs/16/wal-internals.html,kept,3234,
